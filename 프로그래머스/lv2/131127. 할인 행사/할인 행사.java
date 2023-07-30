@@ -23,12 +23,12 @@ class Solution {
            
             for(int j =0;j<wantNum;j++){
              //   System.out.print(want[j]+": "+number[j] +"? "+(Collections.frequency(list, want[j])+" "));
-                if(Collections.frequency(list, want[j])==number[j]){
-                            
+                if(Collections.frequency(list, want[j])!=number[j]){
+                    check++;
+                    break; 
                 }                  
                 else{  
-                    check++;
-                    break;
+                    
                 }                
                   
             }
