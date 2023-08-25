@@ -15,20 +15,22 @@ class Solution {
         });
         
        // printArr(data);
-        int n = 0;
+        int n = -1;
         int newS = 0;
         for(int i = row_begin;i<=row_end;i++){
             newS = 0;
             for(int j=0;j<data[0].length;j++){
                 newS += data[i][j]%(i+1);
             }
+            if(n==-1)
+                n = newS;
+            
             n = n^newS;
  
         }
         
         answer = n;
         
-    
         return answer;
     }
     
