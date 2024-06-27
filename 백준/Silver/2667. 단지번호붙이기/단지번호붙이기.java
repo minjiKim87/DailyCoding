@@ -1,85 +1,61 @@
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.PriorityQueue;
 
-public class Main{
+public class Main {
+    static int N;
+    static char[][] map;
+    static int[] dr = {-1, 1, 0, 0};
+    static int[] dc = {0, 0, -1, 1};
     static boolean[][] visited;
-    static  int[][] direction = {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
-    static int T;
-    static int[][] map;
 
-    public static void main(String[] args) throws Exception{
-       BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-       //BufferedReader br = new BufferedReader(new FileReader("example.txt"));
-       StringBuilder sb = new StringBuilder();
-       
-       T = Integer.valueOf(br.readLine());
-       map = new int[T][T];
-      
-       for(int i=0;i<T;i++){
-        String[] str = br.readLine().split("");
-
-        for(int j =0;j<str.length;j++){
-            map[i][j] = Integer.valueOf(str[j]);
-       
-        }
-       }
-
-       
-
-       visited = new boolean[T][T];
-
-       ArrayList<Integer> list = new ArrayList<>();
-       for(int i =0;i<T;i++){
-        for(int j =0;j<T;j++){
-            if(map[i][j]==1 && visited[i][j]==false){
-                list.add(bfs(i, j));
-                
-            }
-        }
-       }
-
-       Collections.sort(list);
-       
-       System.out.println(list.size());
-       for(Integer i : list){
-        System.out.println(i);
-       }
-    
-       br.close();
+    public static void main(String[] args) throws Exception {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        N = Integer.parseInt(br.readLine());
         
-    }
-
-       static int bfs(int r, int c){
-    
-        int result = 1;
-        Queue<int[]> q = new LinkedList<>();
-
-        q.offer(new int[]{r, c});
-        visited[r][c]=true;
-
-        while(!q.isEmpty()){
-            int[] curr = q.poll();
-
-            for(int i =0;i<4;i++){
-                int newR = curr[0]+direction[i][0];
-                int newC = curr[1]+direction[i][1];
-
-                if(newR>=0&&newR<T&&newC>=0&&newC<T&&visited[newR][newC]==false && map[newR][newC]==1){
-                    q.offer(new int[]{newR, newC});
-                    visited[newR][newC] = true;
-                    result++;
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+        
+        map = new char[N][N];
+        visited = new boolean[N][N];
+        
+        for (int i = 0; i < N; i++) {
+            map[i] = br.readLine().toCharArray();
+        }
+        
+        for (int i = 0; i < N; i++) {
+            for (int j = 0; j < N; j++) {
+                if (map[i][j] == '1' && !visited[i][j]) {
+                    int cnt = dfs(i, j);
+                    minHeap.offer(cnt);
                 }
             }
         }
         
-        return result;
-       }
+        System.out.println(minHeap.size());
+        while (!minHeap.isEmpty()) {
+            System.out.println(minHeap.poll());
+        }
+    }
 
-
-
-
-
+    static int dfs(int x, int y) {
+        visited[x][y] = true;
+        int count = 1;
+        
+        for (int d = 0; d < 4; d++) {
+            int nx = x + dr[d];
+            int ny = y + dc[d];
+            
+            if (nx >= 0 && ny >= 0 && nx < N && ny < N && map[nx][ny] == '1' && !visited[nx][ny]) {
+                count += dfs(nx, ny);
+            }
+        }
+        
+        return count;
+    }
     
-    
+//    static Queue
+//    
+//    static int bfs(int x, int y) {
+//    	
+//    }
 }
-
