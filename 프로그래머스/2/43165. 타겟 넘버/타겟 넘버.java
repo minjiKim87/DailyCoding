@@ -1,40 +1,61 @@
 import java.util.*;
-class Pair{
-    int value;
-    int idx;
-    
-    public Pair(int value, int idx){
-        this.value = value;
-        this.idx = idx;
-    }
-}
 
 class Solution {
     public int solution(int[] numbers, int target) {
         int answer = 0;
-        Queue<Pair> queue = new LinkedList<>();
         
-        queue.offer(new Pair(numbers[0], 0));
-        queue.offer(new Pair(-numbers[0], 0));
+        //target - or + numbers 해서 0이되면 방법 bfs 로 하자 
         
-        
-        while(!queue.isEmpty()){
-          Pair curr = queue.poll();
-            if(curr.idx+1>=numbers.length){
-                break;
-            }
-            
-            queue.offer(new Pair(curr.value+numbers[curr.idx+1], curr.idx+1));
-            queue.offer(new Pair(curr.value-numbers[curr.idx+1], curr.idx+1));
-                
-        }
-        
-        while(!queue.isEmpty()){
-            if(queue.poll().value==target){
-                answer++;
-            }
-        }
+        printArr(numbers);
+        answer = BFS(numbers, target);
         
         return answer;
+    }
+    
+    public int BFS(int[] numbers, int target){
+        
+        Queue<Integer> q = new LinkedList<Integer>();
+        int cnt =0;
+        
+        q.offer(target-numbers[0]);
+        q.offer(target+numbers[0]);
+        
+            int curr;
+ 
+        
+        Stack<Integer> stack = new Stack<>();
+        
+        for(int idx=1;idx<numbers.length;idx++){
+             while(!q.isEmpty()){
+                    curr = q.poll();
+                 
+                 stack.add(curr-numbers[idx]);
+                    stack.add(curr+numbers[idx]);
+              
+            }
+        
+            while(!stack.isEmpty()){
+                q.offer(stack.pop());
+            }
+        }
+        
+        while(!q.isEmpty()){
+            if(q.poll()==0)
+                cnt++;
+        }
+        
+        
+        
+        return cnt;
+        
+        
+    }
+    
+    void printArr(int[] arr){
+        System.out.println("-----");
+        
+        for(int n : arr){
+            System.out.print(n+ " ");
+        }
     }
 }
