@@ -1,56 +1,56 @@
 import java.util.*;
 
-class Pair{
-    int p;
-    int s;
-    
-    Pair(int p, int s){
-        this.p = p;
-        this.s = s;
-    }
-}
-
 class Solution {
     public int[] solution(int[] progresses, int[] speeds) {
+        int[] answer;
         
-        Stack<Pair> first = new Stack<>();
-        Stack<Pair> second = new Stack<>();
-        Queue<Integer> answerQ = new LinkedList<>();
+       // printArr(progresses);
+     //   printArr(speeds);
         
-        for(int i = 0;i<progresses.length;i++){
-            first.add(new Pair(progresses[i], speeds[i]));
+        int n = speeds.length;
+        int[] day = new int[n];
+        
+        for(int i = 0;i<n;i++){
+             day[i] = (100-progresses[i]) / speeds[i];
+            
+            if(day[i]*speeds[i]+progresses[i]<100)
+                day[i]++;
+            
+            
         }
         
-        while(!(first.isEmpty()&&second.isEmpty())){
-            while(!first.isEmpty()){
-                Pair pair = first.pop();
-                second.add(new Pair(pair.p+pair.s, pair.s));
-            }
-            
-            int cnt=0;
-            
-            while(!second.isEmpty()){
-                Pair pair = second.pop();
-                if(pair.p>=100 && first.isEmpty()){
-                    cnt++;
-                }else{
-                    first.add(new Pair(pair.p, pair.s));
-                }
-            }
-            
-            if(cnt!=0){
-                answerQ.add(cnt);
-            }
+        Stack<Integer> stack = new Stack<>();
+        
+        for(int i = n-1;i>=0;i--){
+            stack.push(day[i]);
         }
-
-    
-        int idx=0;
-        int[] answer = new int[answerQ.size()];
-        while(!answerQ.isEmpty()){
-            answer[idx]=answerQ.poll();
-            idx++;
+        
+        ArrayList<Integer> list = new ArrayList<>();
+        
+        while(!stack.isEmpty()){
+            int curr = stack.pop();
+            int cnt = 1;
+            
+            while(!stack.isEmpty() && stack.peek()<=curr){
+                stack.pop();
+                cnt++;
+            }
+ 
+            list.add(cnt);
+                
+        }
+        
+       // printArr(day);
+        answer = new int[list.size()];
+        for(int i =0;i<list.size();i++){
+            answer[i] = list.get(i);
         }
         
         return answer;
+    }
+    
+    void printArr(int[] arr){
+        System.out.println("----");
+        System.out.println(Arrays.toString(arr));
     }
 }
