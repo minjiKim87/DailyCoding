@@ -1,36 +1,45 @@
 import java.io.*;
 import java.util.*;
 
-public class Main{
+public class Main {
+ 
+    static int[] dist;
 
-    public static void main(String[] args) throws Exception{
-       BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-       //BufferedReader br = new BufferedReader(new FileReader("example.txt"));
-       StringBuilder sb = new StringBuilder();
-       
-       int p = Integer.parseInt(br.readLine());
-       List<Integer> list = new ArrayList<>();
-         StringTokenizer st = new StringTokenizer(br.readLine());
-       for(int i =0;i<p;i++){
       
+       public static void main(String[] args) throws IOException {
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st ;
+
+        st = new StringTokenizer(br.readLine());
+         
         int N = Integer.parseInt(st.nextToken());
-        list.add(N);
-       }
+        st = new StringTokenizer(br.readLine());
 
-       Collections.sort(list);
+        int[] arr = new int[N];
 
-       int sum = 0;
-        int answer = 0;
-        for (int s : list) {
-            sum += s;
-            answer += sum;
+        for(int i =0;i<N;i++){
+            arr[i] = Integer.parseInt(st.nextToken());
         }
 
-        System.out.println(answer);
-       br.close();
+        //누적합이 최소가 되도록? 그냥 계산하면 되는거 아닌가
+        Arrays.sort(arr);
+
+        int sum =0;
+
+        for(int i =0;i<N;i++){
+            for(int j =0;j<=i;j++){
+                sum+=arr[j];
+            }
+        }
+        
+        System.out.println(sum);
+ 
+    
         
     }
-    
-    
-}
 
+      
+       
+
+} 
